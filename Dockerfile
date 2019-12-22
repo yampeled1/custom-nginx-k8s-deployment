@@ -22,5 +22,13 @@ FROM alpine as stage2
 
 WORKDIR /usr/local/bin
 COPY --from=stage1 /usr/local/bin/nginx .
+
+RUN groupadd -r nginx \
+    && useradd -r -m -g nginx nginx \
+    && touch /run/nginx.pid \
+    && chown -R nginx:nginx /var/log/nginx /var/lib/nginx /run/nginx.pid \
+    && sudo usermod -aG adm nginx
+
+USER nginx
 COPY ./entrypoint.sh .
 ENTRYPOINT entrypoint.sh
