@@ -8,6 +8,7 @@ RUN apk --update add pcre-dev zlib-dev openssl-dev build-base wget && \
     tar -zxvf ${NGINX_VERSION}.tar.gz && \
     cd /tmp/src/${NGINX_VERSION} && \
     ./configure \
+        --user=nginx \
         --with-http_ssl_module \
         --prefix=/etc/nginx \
         --http-log-path=/var/log/nginx/access.log \
@@ -16,11 +17,10 @@ RUN apk --update add pcre-dev zlib-dev openssl-dev build-base wget && \
     make && \
     make install
 
-WORKDIR /etc/nginx
-
 
 FROM alpine as stage2
 
 WORKDIR /usr/local/bin
 COPY --from=stage1 /usr/local/bin/nginx .
-ENTRYPOINT ["su", "-", "nginx", "-c", "/bin/bash"]
+COPY ./entrypoint.sh .
+ENTRYPOINT entrypoint.sh
