@@ -6,11 +6,14 @@ metadata:
     app: nginx
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
   strategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 25%
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
   template:
     metadata:
       labels:
@@ -18,10 +21,10 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx_anyvision
+        image: nginx:alpine
         ports:
         - containerPort: 80
-      volumeMounts:
+        volumeMounts:
         - name: nginx-volume
           mountPath: /var/www/html
         livenessProbe:
