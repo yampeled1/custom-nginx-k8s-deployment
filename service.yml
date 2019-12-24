@@ -3,12 +3,11 @@ kind: Service
 metadata:
   name: nginx-service
   labels:
-    app: nginx-deployment
+    app: nginx
 spec:
-  type: ClusterIP
+  selector:
+    app: nginx
   ports:
   - port: 3000
     targetPort: 80
     name: http
-  selector:
-    app: nginx-deployment

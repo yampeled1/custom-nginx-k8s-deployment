@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:alpine
+        image: nginx_anyvision:v1.0
         ports:
         - containerPort: 80
         volumeMounts:
